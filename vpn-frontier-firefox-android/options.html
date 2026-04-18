@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPN Frontier — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f3f4f7;--sf:#fff;--sf2:#f8f9fb;--sf3:#eef0f4;--brd:#e2e5ec;--brd2:#d0d4de;--tx:#111827;--txd:#6b7280;--txm:#9ca3af;--red:#ef4444;--reds:#dc2626;--rd2:rgba(239,68,68,.06);--rdb:rgba(239,68,68,.14);--grn:#16a34a;--grn2:rgba(22,163,74,.06);--grnb:rgba(22,163,74,.14);--amb:#d97706;--am2:rgba(245,158,11,.06);--amb2:rgba(245,158,11,.14);--blue:#3b82f6;--blue2:rgba(59,130,246,.06);--blueb:rgba(59,130,246,.14);--r:12px}
+html{height:100%}
+body{min-height:100%;background:var(--bg);color:var(--tx);font-family:'Manrope',sans-serif;font-size:14px;line-height:1.5}
+
+.page{max-width:720px;margin:0 auto;padding:32px 24px 48px}
+
+/* Header */
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--brd)}
+.hdr-left{display:flex;align-items:center;gap:14px}
+.logo{width:44px;height:44px;background:linear-gradient(135deg,var(--red),#cc2222);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace}
+.hdr h1{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.hdr .ver{font-size:11px;color:var(--txm);font-family:'JetBrains Mono',monospace}
+.lang-sw{display:flex;border:1px solid var(--brd);border-radius:8px;overflow:hidden}
+.lang-btn{padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;border:none;background:var(--sf);color:var(--txm);cursor:pointer;transition:all .1s}
+.lang-btn.active{background:var(--tx);color:#fff}
+.lang-btn:hover:not(.active){background:var(--sf2);color:var(--tx)}
+
+/* Section cards */
+.section{background:var(--sf);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+.section-head{padding:16px 20px;font-size:15px;font-weight:700;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center}
+.section-body{padding:20px}
+
+/* Rows */
+.s-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.s-row+.s-row{border-top:1px solid var(--brd)}
+.s-label{font-size:13px;color:var(--txd);font-weight:500}
+.s-value{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+
+/* Selects */
+.sel{padding:6px 12px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tx);cursor:pointer;outline:none}
+
+/* Toggle buttons */
+.toggle{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid var(--brd);background:var(--sf2);color:var(--txd);cursor:pointer;transition:all .12s;font-family:'JetBrains Mono',monospace}
+.toggle.on{background:var(--grn2);border-color:var(--grnb);color:var(--grn)}
+.toggle:hover{border-color:var(--brd2)}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--sf2);border:1px solid var(--brd);border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txd)}
+.tag.custom{color:var(--amb);border-color:var(--amb2)}
+.tag .x{cursor:pointer;opacity:.4;font-size:12px;font-style:normal;transition:all .1s}
+.tag .x:hover{opacity:1;color:var(--red)}
+
+/* Add row */
+.add-row{display:flex;gap:8px}
+.add-input{flex:1;padding:8px 14px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none}
+.add-input::placeholder{color:var(--txm)}
+.add-input:focus{border-color:var(--brd2)}
+.add-btn{padding:8px 18px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;color:var(--txd);font-size:12px;font-weight:600;cursor:pointer;transition:all .1s}
+.add-btn:hover{background:var(--sf3);color:var(--tx);border-color:var(--brd2)}
+
+/* Stats */
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{padding:16px;background:var(--sf2);border:1px solid var(--brd);border-radius:var(--r);text-align:center}
+.stat-num{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--tx)}
+.stat-label{font-size:11px;color:var(--txm);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* Bar chart */
+.chart{margin-bottom:16px}
+.chart-title{font-size:13px;font-weight:700;color:var(--txd);margin-bottom:12px}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:120px;padding:0 4px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;height:100%}
+.chart-bar{width:100%;background:var(--red);border-radius:4px 4px 0 0;min-height:2px;transition:height .3s;margin-top:auto}
+.chart-bar-label{font-size:9px;color:var(--txm);margin-top:6px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.chart-bar-count{font-size:9px;color:var(--txd);margin-bottom:4px;font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* Top domains */
+.top-domain{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:12px}
+.top-domain+.top-domain{border-top:1px solid var(--brd)}
+.top-domain-name{font-family:'JetBrains Mono',monospace;color:var(--reds);font-weight:500}
+.top-domain-count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--txd)}
+
+/* Provider grid */
+.prov-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.prov-card{padding:12px 14px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;display:flex;justify-content:space-between;align-items:center;transition:all .1s}
+.prov-card:hover{border-color:var(--brd2)}
+.prov-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--tx)}
+
+/* Import/Export */
+.ie-btns{display:flex;gap:8px;margin-bottom:12px}
+.ie-btn{flex:1;padding:10px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;color:var(--txd);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .1s}
+.ie-btn:hover{background:var(--sf3);color:var(--tx)}
+.ie-area{width:100%;min-height:80px;max-height:150px;padding:12px;background:var(--sf2);border:1px solid var(--brd);border-radius:8px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:11px;resize:vertical;outline:none}
+.ie-msg{font-size:12px;color:var(--grn);margin-top:6px;min-height:16px}
+
+/* About */
+.about-text{font-size:13px;color:var(--txd);line-height:1.7}
+
+/* Action button */
+.action-btn{padding:10px 20px;background:var(--rd2);border:1px solid var(--rdb);border-radius:8px;color:var(--reds);font-size:12px;font-weight:600;cursor:pointer;transition:all .1s}
+.action-btn:hover{background:rgba(239,68,68,.1)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 24px;background:var(--tx);color:#fff;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100}
+.toast.show{opacity:1}
+
+@media(max-width:600px){
+  .page{padding:20px 16px}
+  .stat-cards{grid-template-columns:1fr}
+  .prov-grid{grid-template-columns:1fr}
+  .hdr{flex-direction:column;gap:12px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo">VF</div>
+      <div><h1 id="page-title">VPN Frontier</h1><span class="ver">v6.1.0</span></div>
+    </div>
+    <div class="lang-sw">
+      <button class="lang-btn" id="lang-ru">RU</button>
+      <button class="lang-btn" id="lang-en">EN</button>
+    </div>
+  </div>
+  <div id="content"></div>
+  <div class="toast" id="toast"></div>
+</div>
+<script src="lang.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
