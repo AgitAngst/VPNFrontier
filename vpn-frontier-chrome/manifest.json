@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "VPN Frontier",
+  "version": "6.1.0",
+  "description": "Block Russian domains when your IP is outside Russia. Protect yourself — turn off your VPN.",
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "alarms",
+    "notifications",
+    "webNavigation",
+    "tabs",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://ipapi.co/*",
+    "https://ifconfig.co/*",
+    "https://ipinfo.io/*",
+    "https://pro.ip-api.com/*",
+    "https://freeipapi.com/*",
+    "https://ipwho.is/*",
+    "https://api.ipdata.co/*",
+    "https://api.ipbase.com/*",
+    "https://api.ipgeolocation.io/*",
+    "https://api.ip2location.io/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/globe16.png",
+      "48": "icons/globe48.png",
+      "128": "icons/globe128.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["blocked.html", "blocked.js", "lang.js", "options.html", "options.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/globe16.png",
+    "48": "icons/globe48.png",
+    "128": "icons/globe128.png"
+  },
+  "minimum_chrome_version": "120"
+}
