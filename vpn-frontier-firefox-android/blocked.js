@@ -20,7 +20,7 @@ function playBlockAlert(){
   });
 }
 
-function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+// esc() is in lang.js
 
 chrome.tabs.getCurrent(function(tab){if(!tab)return;chrome.storage.session.get("burl_"+tab.id,function(d){blockedUrl=d["burl_"+tab.id]||null;document.getElementById("burl").textContent=blockedUrl||t("bl.url_unknown")})});
 
@@ -44,7 +44,7 @@ function renderText(){
   document.getElementById("lang-en").className="lang-btn"+(currentLang==="en"?" active":"");
 }
 
-function renderZones(){chrome.storage.sync.get({customTlds:[]},function(s){var el=document.getElementById("zlist");var h="";var k=Object.keys(ZONES_MAP);for(var i=0;i<k.length;i++)h+='<span class="zt">'+ZONES_MAP[k[i]]+'</span>';for(var j=0;j<s.customTlds.length;j++)h+='<span class="zt custom">.'+esc(s.customTlds[j])+'</span>';el.innerHTML=h})}
+function renderZones(){chrome.storage.sync.get({customTlds:[]},function(s){var el=document.getElementById("zlist");var h="";var k=Object.keys(ZONES_MAP);for(var i=0;i<k.length;i++)h+='<span class="zt">'+ZONES_MAP[k[i]]+'</span>';for(var j=0;j<s.customTlds.length;j++)h+='<span class="zt custom">.'+esc(s.customTlds[j])+'</span>';safeRender(el,h)})}
 
 document.getElementById("lang-ru").addEventListener("click",function(){setLang("ru");chrome.runtime.sendMessage({action:"setLang",lang:"ru"});renderText()});
 document.getElementById("lang-en").addEventListener("click",function(){setLang("en");chrome.runtime.sendMessage({action:"setLang",lang:"en"});renderText()});

@@ -3,7 +3,7 @@ var C=document.getElementById("content");
 var BD={"ru":".ru","su":".su","xn--p1ai":".рф","xn--p1acf":".рус","xn--80adxhks":".москва","xn--80aswg":".сайт","xn--d1acj3b":".дети","xn--80asehdb":".онлайн","xn--c1avg":".орг","xn--e1a4c":".ею"};
 
 function msg(a,d){return new Promise(function(r){chrome.runtime.sendMessage(Object.assign({action:a},d||{}),r)})}
-function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+// esc() is in lang.js
 function toast(text){var el=document.getElementById("toast");el.textContent=text;el.classList.add("show");setTimeout(function(){el.classList.remove("show")},2000)}
 
 document.getElementById("lang-ru").addEventListener("click",function(){setLang("ru");chrome.runtime.sendMessage({action:"setLang",lang:"ru"});render()});
@@ -14,7 +14,7 @@ async function render(){
   document.getElementById("lang-en").className="lang-btn"+(currentLang==="en"?" active":"");
   document.getElementById("page-title").textContent=t("o.title").replace("VPN Frontier — ","");
 
-  var st=await msg("getState");if(!st){C.innerHTML="—";return}
+  var st=await msg("getState");if(!st){safeRender(C,"—");return}
   var stats=await msg("getStats");
   var customTlds=st.customTlds||[],whitelist=st.whitelist||[],providers=st.providers||[],allProv=st.allProviders||[];
   var checkFreq=st.checkFreq||10,checkConds=st.checkConds||["nav","timer","startup"],soundEnabled=st.soundEnabled!==false;
@@ -57,7 +57,7 @@ async function render(){
   var sorted=Object.entries(domains).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
   var topHtml=sorted.length?sorted.map(function(e){return'<div class="top-domain"><span class="top-domain-name">'+esc(e[0])+'</span><span class="top-domain-count">'+e[1]+'</span></div>'}).join(""):'<div style="color:var(--txm);text-align:center;padding:12px">'+t("o.stats_no_data")+'</div>';
 
-  C.innerHTML=
+  safeRender(C,
     // General
     '<div class="section"><div class="section-head">'+t("o.sec_general")+'</div><div class="section-body">'+
       '<div class="s-row"><span class="s-label">'+t("p.freq_label")+'</span>'+freqSel+'</div>'+
@@ -88,7 +88,7 @@ async function render(){
     '<div class="section"><div class="section-head">'+t("o.sec_about")+'</div><div class="section-body"><p class="about-text">'+t("o.about_text")+'</p></div></div>'+
 
     // Privacy
-    '<div class="section"><div class="section-head">'+t("o.sec_privacy")+'</div><div class="section-body"><p class="about-text">'+t("o.privacy_text")+'</p></div></div>';
+    '<div class="section"><div class="section-head">'+t("o.sec_privacy")+'</div><div class="section-body"><p class="about-text">'+t("o.privacy_text")+'</p></div></div>');
 
   // ── Events ──
   document.getElementById("freq-sel").addEventListener("change",function(){msg("setCheckFreq",{freq:parseInt(this.value)});toast(t("o.saved"))});

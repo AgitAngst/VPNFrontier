@@ -194,3 +194,11 @@ function t(key, vars) {
 }
 function setLang(lang) { currentLang = lang; chrome.storage.sync.set({ lang: lang }); }
 function loadLang(cb) { chrome.storage.sync.get({ lang: "ru" }, function(d) { currentLang = d.lang; if (cb) cb(currentLang); }); }
+
+// Safe DOM rendering — DOMParser does not execute scripts
+function safeRender(el, html) {
+  var doc = new DOMParser().parseFromString(html, "text/html");
+  el.textContent = "";
+  while (doc.body.firstChild) el.appendChild(document.adoptNode(doc.body.firstChild));
+}
+function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
